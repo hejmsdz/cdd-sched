@@ -1,0 +1,13 @@
+name: planificador
+version: 0.1.0
+
+authors:
+  - Mikołaj Rozwadowski <hejmsdz@users.noreply.github.com>
+
+targets:
+  planificador:
+    main: src/planificador.cr
+
+crystal: 0.26.1
+
+license: MIT
