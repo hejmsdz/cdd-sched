@@ -1,5 +1,6 @@
 require "./instance_file"
 require "./solvers/greedy_algorithm"
+require "./solvers/simulated_annealing"
 
 module Planificador
   extend self
@@ -9,7 +10,7 @@ module Planificador
   def main(path : String, k : Int32, h : Float)
     instance = InstanceFile.new(path).instance(k, h)
 
-    solver = GreedyAlgorithm.new(instance)
+    solver = SimulatedAnnealing.new(instance)
     solution = solver.solve
 
     puts solution.objective

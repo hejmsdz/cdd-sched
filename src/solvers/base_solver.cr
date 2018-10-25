@@ -7,7 +7,15 @@ abstract class BaseSolver
   end
 
   def solve
-    Solution.new(@instance, schedule)
+    create_solution(schedule)
+  end
+
+  def objective(sequence : Enumerable(Schedulable))
+    create_solution(sequence).objective
+  end
+
+  def create_solution(sequence : Enumerable(Schedulable))
+    Solution.new(@instance, sequence)
   end
 
   abstract def schedule : Enumerable(Schedulable)
