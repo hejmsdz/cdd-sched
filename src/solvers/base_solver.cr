@@ -6,6 +6,9 @@ abstract class BaseSolver
     @instance = instance
   end
 
+  def configure(options : Enumerable(String, String))
+  end
+
   def solve
     create_solution(schedule)
   end

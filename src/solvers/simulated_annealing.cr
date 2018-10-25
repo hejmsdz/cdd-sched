@@ -4,6 +4,11 @@ class SimulatedAnnealing < BaseSolver
   @temperature : Float32 = 10000.0
   @cooling_rate : Float32 = 0.03
 
+  def configure(options)
+    @temperature = options["TEMPERATURE"].to_f32 if options.has_key?("TEMPERATURE")
+    @cooling_rate = options["COOLING_RATE"].to_f32 if options.has_key?("COOLING_RATE")
+  end
+
   def schedule
     current_sequence = random_sequence
     current_objective = objective(current_sequence)

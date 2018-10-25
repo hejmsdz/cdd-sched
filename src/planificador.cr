@@ -11,6 +11,7 @@ module Planificador
     instance = InstanceFile.new(path).instance(k, h)
 
     solver = SimulatedAnnealing.new(instance)
+    solver.configure(ENV)
     solution = solver.solve
 
     puts solution.objective
