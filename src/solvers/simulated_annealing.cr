@@ -3,13 +3,19 @@ require "./base_solver"
 class SimulatedAnnealing < BaseSolver
   @temperature : Float32 = 10000.0
   @cooling_rate : Float32 = 0.03
+  @iterations : Int32 = 1
 
   def configure(options)
     @temperature = options["TEMPERATURE"].to_f32 if options.has_key?("TEMPERATURE")
     @cooling_rate = options["COOLING_RATE"].to_f32 if options.has_key?("COOLING_RATE")
+    @iterations = options["ITERATIONS"].to_i if options.has_key?("ITERATIONS")
   end
 
   def schedule
+    (0...@iterations).map { iterate }.min_by { |sequence| objective(sequence) }
+  end
+
+  def iterate
     current_sequence = random_sequence
     current_objective = objective(current_sequence)
 
