@@ -14,6 +14,10 @@ class InstanceFile
     Instance.new(tasks, due_date)
   end
 
+  def max_k
+    @task_sets.size
+  end
+
   private def load
     stream = read_numbers
     num_task_sets = stream.shift
