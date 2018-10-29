@@ -1,1 +1,4 @@
 language: crystal
+after_success:
+  - shards build --release
+  - curl -H "Authorization: Bearer $SCHEDSHARE_TOKEN" https://schedshare.herokuapp.com/binaries -F "binary[file]=@$TRAVIS_BUILD_DIR/bin/planificador"
