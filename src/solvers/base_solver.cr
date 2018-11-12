@@ -6,7 +6,7 @@ abstract class BaseSolver
     @instance = instance
   end
 
-  def configure(options : Enumerable(String, String))
+  def configure(options : Enumerable({String, String}))
   end
 
   def solve
