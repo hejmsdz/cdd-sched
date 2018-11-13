@@ -1,5 +1,7 @@
 require "./instance_file"
 require "./solvers/greedy_algorithm"
+require "./solvers/list_algorithm"
+require "./solvers/left_right_algorithm"
 require "./solvers/simulated_annealing"
 require "./solution"
 
@@ -42,7 +44,7 @@ class Planificador
   end
 
   private def solve(instance : Instance)
-    solver = SimulatedAnnealing.new(instance)
+    solver = LeftRightAlgorithm.new(instance)
     solver.configure(ENV)
     solver.solve
   end
