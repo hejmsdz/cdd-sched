@@ -45,10 +45,17 @@ end
 
 class Instance
   getter tasks : Enumerable(Task)
+  getter h : Float64
   getter due_date : Int32
 
-  def initialize(tasks : Enumerable(Task), due_date : Int32)
+  def initialize(tasks : Enumerable(Task), h : Float64)
     @tasks = tasks
-    @due_date = due_date
+    @h = h
+    @due_date = calculate_due_date
+  end
+
+  def calculate_due_date
+    total_duration = tasks.map(&.duration).sum
+    (total_duration * h).to_i
   end
 end

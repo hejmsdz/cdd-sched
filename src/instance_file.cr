@@ -9,9 +9,7 @@ class InstanceFile
 
   def instance(k : Int32, h : Float)
     tasks = @task_sets[k - 1]
-    total_duration = tasks.map(&.duration).sum
-    due_date = (total_duration * h).to_i
-    Instance.new(tasks, due_date)
+    Instance.new(tasks, h)
   end
 
   def max_k
