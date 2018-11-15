@@ -11,14 +11,10 @@ class LeftRightAlgorithm < BaseSolver
     @end_time = @instance.due_date
 
     tasks.each do |task|
-      if @start_time - task.duration < 0
+      if @start_time < task.duration || before_cost(task) > after_cost(task)
         add_after(task)
       else
-        if before_cost(task) < after_cost(task)
-          add_before(task)
-        else
-          add_after(task)
-        end
+        add_before(task)
       end
     end
 
