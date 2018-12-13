@@ -44,7 +44,7 @@ class Planificador
   end
 
   private def solve(instance : Instance)
-    solver = LeftRightAlgorithm.new(instance)
+    solver = SimulatedAnnealing.new(instance)
     solver.configure(ENV)
     solver.solve
   end
