@@ -27,7 +27,7 @@ class LeftRightAlgorithm < BaseSolver
 
   private def tasks_by_importance
     @instance.tasks.sort_by do |task|
-      - (task.earliness_penalty + task.tardiness_penalty)
+      - [task.earliness_penalty, task.tardiness_penalty].max / task.duration.to_f
     end
   end
 
