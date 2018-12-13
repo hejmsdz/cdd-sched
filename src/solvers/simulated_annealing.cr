@@ -1,8 +1,9 @@
 require "./base_solver"
+require "./left_right_algorithm"
 
 class SimulatedAnnealing < BaseSolver
   @temperature : Float32 = 10000.0
-  @cooling_rate : Float32 = 0.03
+  @cooling_rate : Float32 = 0.005
   @iterations : Int32 = 1
 
   def configure(options)
@@ -16,7 +17,7 @@ class SimulatedAnnealing < BaseSolver
   end
 
   def iterate
-    current_sequence = random_sequence
+    current_sequence = initial_sequence
     current_objective = objective(current_sequence)
 
     while @temperature > 1
@@ -38,12 +39,8 @@ class SimulatedAnnealing < BaseSolver
     Math.exp((current_energy - new_energy) / @temperature)
   end
 
-  def random_sequence
-    sequence = [] of Schedulable
-    @instance.tasks.shuffle.each do |task|
-      sequence << task
-    end
-    sequence
+  def initial_sequence
+    LeftRightAlgorithm.new(@instance).schedule
   end
 
   def modify(sequence)
