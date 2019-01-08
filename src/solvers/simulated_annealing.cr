@@ -2,23 +2,41 @@ require "./base_solver"
 require "./left_right_algorithm"
 
 class SimulatedAnnealing < BaseSolver
-  @temperature : Float32 = 10000.0
+  @initial_temperature : Float32 = 10000.0
+  @temperature : Float32 = 0
   @cooling_rate : Float32 = 0.005
-  @iterations : Int32 = 1
 
   def configure(options)
-    @temperature = options["TEMPERATURE"].to_f32 if options.has_key?("TEMPERATURE")
+    @initial_temperature = options["TEMPERATURE"].to_f32 if options.has_key?("TEMPERATURE")
     @cooling_rate = options["COOLING_RATE"].to_f32 if options.has_key?("COOLING_RATE")
-    @iterations = options["ITERATIONS"].to_i if options.has_key?("ITERATIONS")
   end
 
   def schedule
-    (0...@iterations).map { iterate }.min_by { |sequence| objective(sequence) }
+    sequence = simple_heuristic_solution
+    objective_value = objective(sequence)
+
+    loop do
+      new_sequence = iterate(sequence, objective_value)
+      new_objective_value = objective(new_sequence)
+
+      if sequence.nil? || new_objective_value < objective_value.not_nil!
+        sequence = new_sequence
+        objective_value = new_objective_value
+      end
+
+      @cooling_rate *= 0.9
+
+      break unless can_continue?
+    end
+
+    sequence.not_nil!
   end
 
-  def iterate
+  def iterate(initial_sequence, initial_objective)
     current_sequence = initial_sequence
-    current_objective = objective(current_sequence)
+    current_objective = initial_objective
+
+    @temperature = @initial_temperature
 
     while @temperature > 1
       new_sequence = modify(current_sequence)
@@ -39,7 +57,7 @@ class SimulatedAnnealing < BaseSolver
     Math.exp((current_energy - new_energy) / @temperature)
   end
 
-  def initial_sequence
+  def simple_heuristic_solution
     LeftRightAlgorithm.new(@instance).schedule
   end
 

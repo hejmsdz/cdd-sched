@@ -6,7 +6,7 @@ require "./solvers/simulated_annealing"
 require "./solution"
 
 class Planificador
-  VERSION = "0.1.0"
+  VERSION = "0.2.0"
 
   def initialize(args : Array(String))
     @args = args
@@ -20,6 +20,12 @@ class Planificador
     { path: @args[0].to_s, k: @args[1].to_i, h: @args[2].to_f }
   rescue IndexError | ArgumentError
     information
+  end
+
+  private def timeout
+    @args[3].to_i
+  rescue IndexError | ArgumentError
+    0
   end
 
   private def load_instance(path : String, k : Int32, h : Float)
@@ -45,6 +51,9 @@ class Planificador
 
   private def solve(instance : Instance)
     solver = SimulatedAnnealing.new(instance)
+    if timeout > 0
+      solver.timeout = timeout
+    end
     solver.configure(ENV)
     solver.solve
   end
